@@ -1,21 +1,41 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
+MUSIC_PATTERN="chromium"
+VIDEO_PATTERN="firefox"
 
-# Get the YouTube Music Chromium MPRIS player instance
-YoutubeMusicPlayer=$(playerctl -l | grep chromium | head -n 1)
-
-# Check if a Chromium-based player was found
-if [[ -z $YoutubeMusicPlayer ]]; then
-  echo "YouTube Music player not found. Ensure the YouTube Music tab is active and playing."
-  exit 1
+# Require first argument
+if [[ $# -lt 1 ]]; then
+	echo "Usage: $0 {music|video} <playerctl command>"
+	exit 1
 fi
 
-# Pass arguments to the identified player
+case "$1" in
+music)
+	player_pattern="$MUSIC_PATTERN"
+	;;
+video)
+	player_pattern="$VIDEO_PATTERN"
+	;;
+*)
+	echo "First argument must be 'music' or 'video'"
+	exit 1
+	;;
+esac
+
+# Remove selector argument
+shift
+
+# Ensure a playerctl command remains
 if [[ $# -eq 0 ]]; then
-  echo "Usage: $0 <command>"
-  echo "Example commands: play, pause, next, previous, metadata or -h for playerctl help"
-  exit 1
+	echo "Provide a playerctl command (play, pause, next, metadata, etc.)"
+	exit 1
 fi
 
-playerctl --player="$YoutubeMusicPlayer" "$@"
+player=$(playerctl -l | grep "^$player_pattern" | head -n1)
 
+if [[ -z "$player" ]]; then
+	echo "No active player found for $player_pattern"
+	exit 1
+fi
+
+playerctl --player="$player" "$@"
