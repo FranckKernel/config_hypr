@@ -1,6 +1,6 @@
 #!/bin/bash
 
-PARTITION="/dev/nvme0n1p4"
+PARTITION="/dev/nvme0n1p3"
 
 # Get free space information for $PARTITION
 free_space=$(df -h $PARTITION | awk 'NR==2 {print $4}')
