@@ -322,7 +322,7 @@ hl.device({
 ---------------------
 
 local mainMod = "SUPER" -- Sets "Windows" key as main modifier
-local mainModShift = "SUPER + Shift"
+local mainModShift = "SUPER + SHIFT"
 local altMod = "ALT"
 
 ---- Niche keybinds ----
@@ -393,42 +393,42 @@ hl.bind(mainMod .. " + F11", hl.dsp.exec_cmd("hyprctl dispatch dpms off"))
 hl.bind(mainMod .. " + F12", hl.dsp.exec_cmd("hyprctl dispatch dpms on"))
 
 -- Move focus with mainMod + arrow keys
-hl.bind(mainMod .. " + LEFT", hl.dsp.focus("l"))
-hl.bind(mainMod .. " + RIGHT", hl.dsp.focus("r"))
-hl.bind(mainMod .. " + UP", hl.dsp.focus("u"))
-hl.bind(mainMod .. " + DOWN", hl.dsp.focus("d"))
+hl.bind(mainMod .. " + LEFT", hl.dsp.focus({ direction = "left" }))
+hl.bind(mainMod .. " + RIGHT", hl.dsp.focus({ direction = "right" }))
+hl.bind(mainMod .. " + UP", hl.dsp.focus({ direction = "up" }))
+hl.bind(mainMod .. " + DOWN", hl.dsp.focus({ direction = "down" }))
 
 -- Move the windows
-hl.bind(mainMod .. " + SHIFT + LEFT", hl.dsp.window.move("l"))
-hl.bind(mainMod .. " + SHIFT + RIGHT", hl.dsp.window.move("r"))
-hl.bind(mainMod .. " + SHIFT + UP", hl.dsp.window.move("u"))
-hl.bind(mainMod .. " + SHIFT + DOWN", hl.dsp.window.move("d"))
+hl.bind(mainMod .. " + SHIFT + LEFT", hl.dsp.window.move({ direction = "left" }))
+hl.bind(mainMod .. " + SHIFT + RIGHT", hl.dsp.window.move({ direction = "right" }))
+hl.bind(mainMod .. " + SHIFT + UP", hl.dsp.window.move({ direction = "up" }))
+hl.bind(mainMod .. " + SHIFT + DOWN", hl.dsp.window.move({ direction = "down" }))
 
 -- Move focus with altMod + vim keys
-hl.bind(altMod .. " + J", hl.dsp.focus("l"))
-hl.bind(altMod .. " + L", hl.dsp.focus("r"))
-hl.bind(altMod .. " + I", hl.dsp.focus("u"))
-hl.bind(altMod .. " + K", hl.dsp.focus("d"))
+hl.bind(altMod .. " + J", hl.dsp.focus({ direction = "left" }))
+hl.bind(altMod .. " + L", hl.dsp.focus({ direction = "right" }))
+hl.bind(altMod .. " + I", hl.dsp.focus({ direction = "up" }))
+hl.bind(altMod .. " + K", hl.dsp.focus({ direction = "down" }))
 
 -- Move the windows
-hl.bind(altMod .. " + SHIFT + J", hl.dsp.window.move("l"))
-hl.bind(altMod .. " + SHIFT + L", hl.dsp.window.move("r"))
-hl.bind(altMod .. " + SHIFT + I", hl.dsp.window.move("u"))
-hl.bind(altMod .. " + SHIFT + K", hl.dsp.window.move("d"))
+hl.bind(altMod .. " + SHIFT + J", hl.dsp.window.move({ direction = "left" }))
+hl.bind(altMod .. " + SHIFT + L", hl.dsp.window.move({ direction = "right" }))
+hl.bind(altMod .. " + SHIFT + I", hl.dsp.window.move({ direction = "up" }))
+hl.bind(altMod .. " + SHIFT + K", hl.dsp.window.move({ direction = "down" }))
 
-hl.bind(mainMod .. " + TAB", hl.dsp.window.alter_zorder("top"))
-hl.bind(mainMod .. " + SHIFT + TAB", hl.dsp.window.alter_zorder("bottom"))
+hl.bind(mainMod .. " + TAB", hl.dsp.window.alter_zorder({ mode = "top" }))
+hl.bind(mainMod .. " + SHIFT + TAB", hl.dsp.window.alter_zorder({ mode = "bottom" }))
 
 hl.bind(mainMod .. " + A", hl.dsp.window.cycle_next())
 hl.bind(mainMod .. " + Z", hl.dsp.window.cycle_next({ prev = true }))
-hl.bind(mainMod .. " + A", hl.dsp.window.alter_zorder("top"))
+hl.bind(mainMod .. " + A", hl.dsp.window.alter_zorder({ mode = "top" }))
 
-hl.bind(mainMod .. " + TAB", hl.dsp.window.alter_zorder("top"))
-hl.bind(mainMod .. " + SHIFT + TAB", hl.dsp.window.alter_zorder("bottom"))
+hl.bind(mainMod .. " + TAB", hl.dsp.window.alter_zorder({ mode = "top" }))
+hl.bind(mainMod .. " + SHIFT + TAB", hl.dsp.window.alter_zorder({ mode = "bottom" }))
 
 -- Example special workspace (scratchpad)
 hl.bind(mainMod .. " + S", hl.dsp.workspace.toggle_special("magic"))
-hl.bind(mainMod .. " + SHIFT + S", hl.dsp.workspace.move("special:magic"))
+hl.bind(mainMod .. " + SHIFT + S", hl.dsp.window.move({ workspace = "special:magic" }))
 
 -- Main workspace (1-10)
 for i = 1, 10 do
