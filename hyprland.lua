@@ -326,7 +326,9 @@ local altMod = "ALT"
 
 ---- Niche keybinds ----
 hl.bind(mainMod .. " + F1", hl.dsp.exec_cmd("$HOME/.config/hypr/scripts/log_keys_for_buggy_keyboard.sh"))
+hl.bind(mainMod .. " + F2", hl.dsp.exec_cmd("wdisplays"))
 hl.bind(mainMod .. " + F12", hl.dsp.exec_cmd("bash -c 'timeout 10s wev --log-level debug > /tmp/wev_keys.txt'"))
+
 hl.bind(mainModShift .. " + E", hl.dsp.exec_cmd("python3 $HOME/QolScripts/screen_placer/screen_placer.py"))
 hl.bind(mainMod .. " + BACKSPACE", hl.dsp.exec_cmd("python3 $HOME/QolScripts/screen_placer/screen_placer_better.py"))
 hl.bind(altMod .. " + R", hl.dsp.exec_cmd("/home/francois/.config/hypr/scripts/reset_wallpaper.sh"))
@@ -351,6 +353,7 @@ hl.bind(mainMod .. " + K", hl.dsp.window.cycle_next({ prev = true }))
 hl.bind(mainMod .. " + O", hl.dsp.window.pseudo())
 hl.bind(mainMod .. " + V", hl.dsp.layout("togglesplit"))
 
+-- Program binding
 hl.bind(mainMod .. " + C", hl.dsp.exec_cmd(fileManager))
 hl.bind(mainMod .. " + RETURN", hl.dsp.exec_cmd(terminal))
 hl.bind(mainMod .. " + H", hl.dsp.exec_cmd(terminal))
@@ -363,6 +366,7 @@ hl.bind(mainMod .. " + SHIFT + W", hl.dsp.exec_cmd(browser .. " --private-window
 hl.bind(mainMod .. " + ALT + W", hl.dsp.exec_cmd("google-chrome-stable"))
 hl.bind(mainMod .. " + ALT + SHIFT + W", hl.dsp.exec_cmd("google-chrome-stable --incognito"))
 
+-- Menus binding
 hl.bind(mainMod .. " + P", hl.dsp.exec_cmd("~/.config/rofi/applets/bin/powermenu.sh"))
 hl.bind(mainMod .. " + T", hl.dsp.exec_cmd("~/.config/rofi/applets/bin/screenshot-wayland.sh"))
 hl.bind(altMod .. " + M", hl.dsp.exec_cmd("~/.config/rofi/applets/bin/mpd.sh"))
@@ -391,6 +395,9 @@ hl.bind(mainMod .. " + F10", hl.dsp.exec_cmd("hyprlock"))
 
 hl.bind(mainMod .. " + F11", hl.dsp.exec_cmd("hyprctl dispatch dpms off"))
 hl.bind(mainMod .. " + F12", hl.dsp.exec_cmd("hyprctl dispatch dpms on"))
+
+hl.bind(mainMod .. " + F", hl.dsp.window.fullscreen())
+hl.bind(mainMod .. " + SPACE", hl.dsp.window.float({ action = "toggle" }))
 
 -- Move focus with mainMod + arrow keys
 hl.bind(mainMod .. " + LEFT", hl.dsp.focus({ direction = "left" }))

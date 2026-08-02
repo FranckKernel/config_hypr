@@ -1,6 +1,7 @@
 #!/bin/bash
 
 LAYOUT=$(hyprctl -j getoption general:layout | jq '.str' | sed 's/"//g')
+# notify-send refresh
 
 case $LAYOUT in
 "dwindle")
@@ -56,4 +57,3 @@ case $LAYOUT in
 *) ;;
 
 esac
-
