@@ -72,43 +72,37 @@ hl.on("hyprland.start", function()
 	hl.exec_cmd("kded5")
 	hl.exec_cmd("swayosd-server")
 	hl.exec_cmd("ironbar")
-	hl.exec_cmd("$HOME/.config/waybar/waybar_toggle.sh")
+	hl.exec_cmd("$HOME/.config/waybar/waybar_toggle_bottom_desktop.sh")
 
 	hl.exec_cmd('kitty tmux new-session -c "$HOME/Documents/zzz__PersonalProjects/ESP32/myProject/src/" -s Editor', {
 		workspace = "1",
-		silent = true,
 	})
 
 	if Location == Locations.DAD then
 		hl.exec_cmd('kitty tmux new-session -c "$HOME/Documents/zzz__PersonalProjects/ESP32/myProject/" -s Runner', {
 			workspace = "12",
-			silent = true,
 		})
 	elseif Location == Locations.MOM then
 		hl.exec_cmd('kitty tmux new-session -c "$HOME/Documents/zzz__PersonalProjects/ESP32/myProject/" -s Runner', {
 			workspace = "21",
-			silent = true,
 		})
 	end
 
 	hl.exec_cmd('kitty tmux new-session -c "$HOME/Documents/zzz__PersonalProjects/ESP32/myProject/" -s Debugger', {
 		workspace = "11",
-		silent = true,
 	})
 
-	hl.exec_cmd("$browser", {
+	hl.exec_cmd(browser, {
 		workspace = "13",
-		silent = true,
 	})
 
 	hl.exec_cmd("youtube-music", {
 		workspace = "20",
-		silent = true,
 	})
 
-	hl.dispatch(hl.dsp.workspace("13"))
-	hl.dispatch(hl.dsp.workspace("21"))
-	hl.dispatch(hl.dsp.workspace("1"))
+	hl.dispatch(hl.dsp.focus({ workspace = 13 }))
+	hl.dispatch(hl.dsp.focus({ workspace = 21 }))
+	hl.dispatch(hl.dsp.focus({ workspace = 1 }))
 end)
 
 -- Simple execs:
@@ -219,6 +213,11 @@ hl.config({
 	misc = {
 		force_default_wallpaper = -1, -- Set to 0 or 1 to disable the anime mascot wallpapers
 		disable_hyprland_logo = false, -- If true disables the random hyprland logo / anime girl background. :(
+	},
+
+	debug = {
+		disable_logs = false,
+		enable_stdout_logs = true,
 	},
 })
 
@@ -385,6 +384,7 @@ hl.bind(mainMod .. " + CTRL + B", hl.dsp.exec_cmd("~/.config/waybar/waybar_toggl
 safe_require("./machine/alt_sound.lua")
 
 hl.bind("SHIFT + PRINT", hl.dsp.exec_cmd("hyprshot -m region"))
+hl.bind("PRINT", hl.dsp.exec_cmd("hyprshot -m output"))
 
 hl.bind(altMod .. " + F10", hl.dsp.exec_cmd("hyprlock"))
 hl.bind(mainMod .. " + F10", hl.dsp.exec_cmd("hyprlock"))
