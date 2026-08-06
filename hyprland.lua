@@ -106,7 +106,74 @@ hl.on("hyprland.start", function()
 end)
 
 -- Simple execs:
-hl.exec_cmd("$HOME/.config/hypr/scripts/refresh_layout.sh")
+-- hl.exec_cmd("$HOME/.config/hypr/scripts/refresh_layout.sh")
+
+local Layouts = {
+	DWINDLE = "dwindle",
+	MASTER = "master",
+	SCROLLING = "scrolling",
+	MONOCLE = "monocle",
+}
+
+local current_layout = Layouts.DWINDLE
+
+local function change_layout_bindings()
+	if current_layout == Layouts.MASTER then
+		current_layout = Layouts.DWINDLE
+		hl.config({
+			general = {
+				layout = current_layout,
+			},
+		})
+
+		hl.unbind("SUPER + E")
+		hl.unbind("SUPER + R")
+		hl.unbind("SUPER + U")
+		hl.unbind("SUPER + I")
+
+		hl.unbind("SUPER + J")
+		hl.unbind("SUPER + K")
+		hl.unbind("SUPER + SHIFT + J")
+		hl.unbind("SUPER + SHIFT + K")
+		hl.unbind("SUPER + M")
+		hl.unbind("SUPER + SHIFT + M")
+		hl.unbind("SUPER + PERIOD")
+		hl.unbind("SUPER + COMMA")
+
+		hl.bind("SUPER + J", hl.dsp.window.cycle_next())
+		hl.bind("SUPER + K", hl.dsp.window.cycle_next({ prev = true }))
+		hl.bind("SUPER + V", hl.dsp.layout("togglesplit"))
+		hl.bind("SUPER + O", hl.dsp.window.pseudo())
+		hl.bind("SUPER + SHIFT + O", hl.dsp.exec_cmd("hyprctl dispatch workspaceopt allpseudo"))
+	elseif current_layout == Layouts.DWINDLE then
+		current_layout = Layouts.MASTER
+		hl.config({
+
+			general = {
+				layout = current_layout,
+			},
+		})
+		hl.unbind("SUPER + J")
+		hl.unbind("SUPER + K")
+		hl.unbind("SUPER + V")
+		hl.unbind("SUPER + O")
+		hl.unbind("SUPER + SHIFT + O")
+
+		hl.bind("SUPER + E", hl.dsp.layout("mfact -0.025"))
+		hl.bind("SUPER + R", hl.dsp.layout("mfact +0.025"))
+		hl.bind("SUPER + U", hl.dsp.layout("rollprev"))
+		hl.bind("SUPER + I", hl.dsp.layout("rollnext"))
+
+		hl.bind("SUPER + J", hl.dsp.layout("cyclenext"))
+		hl.bind("SUPER + K", hl.dsp.layout("cycleprev"))
+		hl.bind("SUPER + SHIFT + J", hl.dsp.layout("swapnext"))
+		hl.bind("SUPER + SHIFT + K", hl.dsp.layout("swapprev"))
+		hl.bind("SUPER + M", hl.dsp.layout("focusmaster"))
+		hl.bind("SUPER + SHIFT + M", hl.dsp.layout("swapwithmaster"))
+		hl.bind("SUPER + PERIOD", hl.dsp.layout("orientationnext"))
+		hl.bind("SUPER + COMMA", hl.dsp.layout("orientationprev"))
+	end
+end
 
 -------------------------------
 ---- ENVIRONMENT VARIABLES ----
@@ -124,12 +191,6 @@ hl.env("HYPRCURSOR_SIZE", "24")
 -- See https://wiki.hypr.land/Configuring/Advanced-and-Cool/Permissions/
 -- Please note permission changes here require a Hyprland restart and are not applied on-the-fly
 -- for security reasons
-
--- hl.config({
---   ecosystem = {
---     enforce_permissions = true,
---   },
--- })
 
 -- hl.permission("/usr/(bin|local/bin)/grim", "screencopy", "allow")
 -- hl.permission("/usr/(lib|libexec|lib64)/xdg-desktop-portal-hyprland", "screencopy", "allow")
@@ -164,7 +225,7 @@ hl.config({
 		-- Please see https://wiki.hypr.land/Configuring/Advanced-and-Cool/Tearing/ before you turn this on
 		allow_tearing = false,
 
-		layout = "dwindle",
+		layout = current_layout,
 	},
 
 	decoration = {
@@ -219,6 +280,8 @@ hl.config({
 		disable_logs = false,
 		enable_stdout_logs = true,
 	},
+
+	layout = {},
 })
 
 -- Default curves and animations, see https://wiki.hypr.land/Configuring/Advanced-and-Cool/Animations/
@@ -345,7 +408,7 @@ hl.bind(
 hl.bind(mainMod .. " + G", hl.dsp.group.toggle())
 
 -- Switch layout script
-hl.bind(mainMod .. " + L", hl.dsp.exec_cmd("$HOME/.config/hypr/scripts/change_layout.sh"))
+hl.bind(mainMod .. " + L", change_layout_bindings)
 
 -- Dwindle layout bindings
 hl.bind(mainMod .. " + J", hl.dsp.window.cycle_next())
@@ -367,7 +430,7 @@ hl.bind(mainMod .. " + ALT + W", hl.dsp.exec_cmd("google-chrome-stable"))
 hl.bind(mainMod .. " + ALT + SHIFT + W", hl.dsp.exec_cmd("google-chrome-stable --incognito"))
 
 -- Menus binding
-hl.bind(mainMod .. " + P", hl.dsp.exec_cmd("~/.config/rofi/applets/bin/powermenu.sh"))
+hl.bind(mainMod .. " + P", hl.dsp.exec_cmd("~/.config/rofi/applets/bin/powermenu.sh"), { locked = true })
 hl.bind(mainMod .. " + T", hl.dsp.exec_cmd("~/.config/rofi/applets/bin/screenshot-wayland.sh"))
 hl.bind(altMod .. " + M", hl.dsp.exec_cmd("~/.config/rofi/applets/bin/mpd.sh"))
 hl.bind(mainMod .. " + Y", hl.dsp.exec_cmd("hyprpicker -a"))
@@ -387,8 +450,8 @@ hl.bind(mainMod .. " + CTRL + B", hl.dsp.exec_cmd("~/.config/waybar/waybar_toggl
 
 safe_require("./machine/alt_sound.lua")
 
-hl.bind("SHIFT + PRINT", hl.dsp.exec_cmd("hyprshot -m region"))
-hl.bind("PRINT", hl.dsp.exec_cmd("hyprshot -m output"))
+hl.bind("SHIFT + PRINT", hl.dsp.exec_cmd("hyprshot -m region -o $HOME/Pictures/Screenshots"))
+hl.bind("PRINT", hl.dsp.exec_cmd("hyprshot -m output -o $HOME/Pictures/Screenshots"))
 
 hl.bind(altMod .. " + F10", hl.dsp.exec_cmd("hyprlock"))
 hl.bind(mainMod .. " + F10", hl.dsp.exec_cmd("hyprlock"))
