@@ -6,13 +6,14 @@ Monitor = {
 	LAPTOP = "eDP-1", -- not used on desktop.
 }
 
-Locations = {
-	MOM = "mom",
-	DAD = "dad",
-	OTHER = "other",
-}
+local location_getter = require("luaScripts.get_location")
+local gu = require("luaScripts.general_utils")
 
-Location = Locations.DAD
+Locations = location_getter.Locations
+
+Location = location_getter.Location
+
+-- gu.send_notification(Location)
 
 hl.monitor({
 	output = "",
