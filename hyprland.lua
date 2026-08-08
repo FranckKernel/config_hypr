@@ -94,34 +94,41 @@ hl.on("hyprland.start", function()
 
 	local mainProjectLocation = stmProjectLocation
 
-	hl.exec_cmd('kitty tmux new-session -c "' .. mainProjectLocation .. '" -s Editor', {
-		workspace = "1",
-	})
+	local workspaceOfTerminal = {
+		editorWorkspace = "1",
+		RunnerWorkspace = "21",
+		DebuggerWorkspace = "11",
+	}
 
-	if Location == Locations.DAD then
-		hl.exec_cmd('kitty tmux new-session -c "' .. mainProjectLocation .. '/.." -s Runner', {
-			workspace = "12",
-		})
-	elseif Location == Locations.MOM then
-		hl.exec_cmd('kitty tmux new-session -c "' .. mainProjectLocation .. '/.." -s Runner', {
-			workspace = "21",
-		})
+	if machine == Machine.Desktop then
+		if Location == Locations.DAD then
+			workspaceOfTerminal.RunnerWorkspace = "12"
+		elseif Location == Locations.MOM then
+			-- stay at 21
+		end
+	elseif machine == Machine.Laptop then
+		workspaceOfTerminal.RunnerWorkspace = "12"
 	end
 
+	hl.exec_cmd('kitty tmux new-session -c "' .. mainProjectLocation .. '" -s Editor', {
+		workspace = workspaceOfTerminal.editorWorkspace,
+	})
+	hl.exec_cmd('kitty tmux new-session -c "' .. mainProjectLocation .. '/.." -s Runner', {
+		workspace = workspaceOfTerminal.RunnerWorkspace,
+	})
 	hl.exec_cmd('kitty tmux new-session -c "' .. mainProjectLocation .. '/.." -s Debugger', {
-		workspace = "11",
+		workspace = workspaceOfTerminal.DebuggerWorkspace,
 	})
 
 	hl.exec_cmd(browser, {
 		workspace = "13",
 	})
-
 	hl.exec_cmd("youtube-music", {
 		workspace = "20",
 	})
 
 	hl.dispatch(hl.dsp.focus({ workspace = 13 }))
-	hl.dispatch(hl.dsp.focus({ workspace = 21 }))
+	hl.dispatch(hl.dsp.focus({ workspace = 21 })) -- since this is the third screen, i can key this hard coded
 	hl.dispatch(hl.dsp.focus({ workspace = 1 }))
 end)
 
