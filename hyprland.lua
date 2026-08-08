@@ -45,7 +45,7 @@ local machine = mach.machine
 ---- MONITORS ----
 ------------------
 
-safe_require("./machine/monitor.lua")
+safe_require("./machineShared/monitor.lua")
 
 ------------------
 --- WORSKPACES ---
@@ -468,7 +468,7 @@ hl.bind(mainMod .. " + CTRL + F", hl.dsp.exec_cmd("$HOME/.config/conky/show_all/
 hl.bind(mainMod .. " + CTRL + T", hl.dsp.exec_cmd("$HOME/.config/ironbar/ironbar_toggle_top_bar.sh"))
 hl.bind(mainMod .. " + CTRL + B", hl.dsp.exec_cmd("~/.config/waybar/waybar_toggle_bottom_desktop.sh"))
 
-safe_require("./machine/alt_sound.lua")
+safe_require("./machineShared/media.lua")
 
 hl.bind("SHIFT + PRINT", hl.dsp.exec_cmd("hyprshot -m region -o $HOME/Pictures/Screenshots"))
 hl.bind("PRINT", hl.dsp.exec_cmd("hyprshot -m output -o $HOME/Pictures/Screenshots"))
