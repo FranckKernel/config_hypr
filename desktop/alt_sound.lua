@@ -1,3 +1,8 @@
+local gu = require("luaScripts.general_utils")
+local mach = require("luaScripts.get_machine")
+Machine = mach.Machine
+local machine = mach.machine
+
 local mainMod = "SUPER"
 local altMod = "ALT"
 

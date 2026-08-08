@@ -1,4 +1,5 @@
 -- This is an example Hyprland Lua config file.
+
 -- Refer to the wiki for more information.
 -- https://wiki.hypr.land/Configuring/Start/
 
@@ -31,6 +32,15 @@ local function safe_require(module)
 	return nil
 end
 
+------------------
+---- MACHINE -----
+------------------
+local mach = require("luaScripts.get_machine")
+-- This require doesn't do any hyprland stuff, it just gets us the current machine
+Machine = mach.Machine
+local machine = mach.machine
+
+-- safe_require("luaScripts.get_monitor_properties")
 ------------------
 ---- MONITORS ----
 ------------------
@@ -74,21 +84,27 @@ hl.on("hyprland.start", function()
 	hl.exec_cmd("ironbar")
 	hl.exec_cmd("$HOME/.config/waybar/waybar_toggle_bottom_desktop.sh")
 
-	hl.exec_cmd('kitty tmux new-session -c "$HOME/Documents/zzz__PersonalProjects/ESP32/myProject/src/" -s Editor', {
+	local x86ProjectLocation = "$HOME/Documents/zzz__PersonalProjects/MapleKernel/src"
+	local espProjectLocation = "$HOME/Documents/zzz__PersonalProjects/ESP32/myProject/src"
+	local stmProjectLocation = "$HOME/Documents/zzz__PersonalProjects/STM32/STMKernel/src"
+
+	local mainProjectLocation = stmProjectLocation
+
+	hl.exec_cmd('kitty tmux new-session -c "' .. mainProjectLocation .. '" -s Editor', {
 		workspace = "1",
 	})
 
 	if Location == Locations.DAD then
-		hl.exec_cmd('kitty tmux new-session -c "$HOME/Documents/zzz__PersonalProjects/ESP32/myProject/" -s Runner', {
+		hl.exec_cmd('kitty tmux new-session -c "' .. mainProjectLocation .. '/.." -s Runner', {
 			workspace = "12",
 		})
 	elseif Location == Locations.MOM then
-		hl.exec_cmd('kitty tmux new-session -c "$HOME/Documents/zzz__PersonalProjects/ESP32/myProject/" -s Runner', {
+		hl.exec_cmd('kitty tmux new-session -c "' .. mainProjectLocation .. '/.." -s Runner', {
 			workspace = "21",
 		})
 	end
 
-	hl.exec_cmd('kitty tmux new-session -c "$HOME/Documents/zzz__PersonalProjects/ESP32/myProject/" -s Debugger', {
+	hl.exec_cmd('kitty tmux new-session -c "' .. mainProjectLocation .. '/.." -s Debugger', {
 		workspace = "11",
 	})
 

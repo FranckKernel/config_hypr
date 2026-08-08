@@ -6,6 +6,7 @@ import time
 from pathlib import Path
 
 from typing import Tuple
+from enum import IntEnum
 
 import dbus
 from dbus.mainloop.glib import DBusGMainLoop
@@ -20,6 +21,15 @@ CURRENT_LOCATION_FILE = Path.home() / ".config/hypr/ignore/current_location.txt"
 
 DBusGMainLoop(set_as_default=True)
 result = {}
+
+
+class GClueAccuracyLevel(IntEnum):
+    NONE = 0
+    COUNTRY = 1
+    CITY = 4
+    NEIGHBORHOOD = 5
+    STREET = 6
+    EXACT = 8
 
 
 def location_updated(old_path, new_path):
@@ -49,7 +59,7 @@ def get_location_live() -> Tuple[float, float, float, str] | None:
     client = dbus.Interface(client_obj, "org.freedesktop.GeoClue2.Client")
     props = dbus.Interface(client_obj, "org.freedesktop.DBus.Properties")
     props.Set("org.freedesktop.GeoClue2.Client", "DesktopId", "hypr-location-script")
-    props.Set("org.freedesktop.GeoClue2.Client", "RequestedAccuracyLevel", dbus.UInt32(8))
+    props.Set("org.freedesktop.GeoClue2.Client", "RequestedAccuracyLevel", dbus.UInt32(GClueAccuracyLevel.EXACT))
 
     client.connect_to_signal("LocationUpdated", location_updated)
     client.Start()
