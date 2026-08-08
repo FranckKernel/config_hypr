@@ -29,7 +29,7 @@ end
 hl.bind("XF86AudioPlay", hl.dsp.exec_cmd(youtube_controller .. " video play-pause"), { locked = true })
 hl.bind("XF86AudioNext", hl.dsp.exec_cmd(youtube_controller .. " video next"), { locked = true })
 hl.bind("XF86AudioPrev", hl.dsp.exec_cmd(youtube_controller .. " video previous"), { locked = true })
-hl.bind("XF86AudioMute", hl.dsp.exec_cmd("swayosd-client --output-volume mute"), { locked = true })
+hl.bind("XF86AudioMute", hl.dsp.exec_cmd("swayosd-client --output-volume mute-toggle"), { locked = true })
 
 -- MPC media controls
 hl.bind(mainMod .. " + CTRL + LEFT", hl.dsp.exec_cmd("mpc next"), { locked = true })
