@@ -82,7 +82,11 @@ hl.on("hyprland.start", function()
 	hl.exec_cmd("kded5")
 	hl.exec_cmd("swayosd-server")
 	hl.exec_cmd("ironbar")
-	hl.exec_cmd("$HOME/.config/waybar/waybar_toggle_bottom_desktop.sh")
+	if machine == Machine.Desktop then
+		hl.exec_cmd("$HOME/.config/waybar/waybar_toggle_bottom_desktop.sh")
+	elseif machine == Machine.Laptop then
+		hl.exec_cmd("$HOME/.config/waybar/waybar_toggle_bottom_laptop.sh")
+	end
 
 	local x86ProjectLocation = "$HOME/Documents/zzz__PersonalProjects/MapleKernel/src"
 	local espProjectLocation = "$HOME/Documents/zzz__PersonalProjects/ESP32/myProject/src"
