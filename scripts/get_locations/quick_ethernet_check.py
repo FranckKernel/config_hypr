@@ -14,7 +14,7 @@ def find_location():
     if ethernet_connected():
         return "Mom"
 
-    return "Unknown"
+    return "Dad"
 
 
 if __name__ == "__main__":

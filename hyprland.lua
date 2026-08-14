@@ -12,6 +12,7 @@
 
 local env = {
 	HOME = os.getenv("HOME"),
+	--
 }
 
 local function p(path)
@@ -82,6 +83,11 @@ hl.on("hyprland.start", function()
 	hl.exec_cmd("kded5")
 	hl.exec_cmd("swayosd-server")
 	hl.exec_cmd("ironbar")
+
+	-- Give systemd access to the new information. Pick one or the other
+	-- hl.exec_cmd("dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP HYPRLAND_INSTANCE_SIGNATURE")
+	hl.exec_cmd("dbus-update-activation-environment --systemd -all")
+
 	if machine == Machine.Desktop then
 		hl.exec_cmd("$HOME/.config/waybar/waybar_toggle_bottom_desktop.sh")
 	elseif machine == Machine.Laptop then
@@ -113,10 +119,10 @@ hl.on("hyprland.start", function()
 	hl.exec_cmd('kitty tmux new-session -c "' .. mainProjectLocation .. '" -s Editor', {
 		workspace = workspaceOfTerminal.editorWorkspace,
 	})
-	hl.exec_cmd('kitty tmux new-session -c "' .. mainProjectLocation .. '/.." -s Runner', {
+	hl.exec_cmd('kitty tmux new-session -c "' .. mainProjectLocation .. '" -s Runner', {
 		workspace = workspaceOfTerminal.RunnerWorkspace,
 	})
-	hl.exec_cmd('kitty tmux new-session -c "' .. mainProjectLocation .. '/.." -s Debugger', {
+	hl.exec_cmd('kitty tmux new-session -c "' .. mainProjectLocation .. '" -s Debugger', {
 		workspace = workspaceOfTerminal.DebuggerWorkspace,
 	})
 
@@ -605,3 +611,9 @@ hl.window_rule({
 	move = "20 monitor_h-120",
 	float = true,
 })
+
+-- End of config
+hl.on("hyprland.start", function()
+	--
+	hl.exec_cmd("systemctl --user start graphical-session.target")
+end)

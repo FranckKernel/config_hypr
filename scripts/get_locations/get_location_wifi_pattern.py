@@ -38,6 +38,10 @@ def load_locations():
 
 def find_location():
     wifi_networks = get_wifi_networks()
+    print(wifi_networks)
+
+    a = load_locations()
+    print(f"a = {a}")
 
     for location in load_locations():
         pattern = location["pattern"]
