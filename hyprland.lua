@@ -107,8 +107,11 @@ hl.on("hyprland.start", function()
 	}
 
 	if machine == Machine.Desktop then
+		local active_monitors = require("luaScripts.check_plugged_monitors").monitor_count
+
 		if Location == Locations.DAD then
-			workspaceOfTerminal.RunnerWorkspace = "12"
+			-- workspaceOfTerminal.RunnerWorkspace = "12"
+			-- If i have 3 screen at dads how, don't move it
 		elseif Location == Locations.MOM then
 			-- stay at 21
 		end
