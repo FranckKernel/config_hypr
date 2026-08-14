@@ -122,6 +122,10 @@ if [[ "$pre_change_location" != "$post_change_location" ]]; then
 		exit 4
 	}
 	notify_msg "Reloading"
+
+	sleep 2
+	WORKSPACE_FIX_SCRIPT="$HOME/.config/hypr/scripts/bind_workspaces_to_good_monitor.py"
+	python "$WORKSPACE_FIX_SCRIPT"
 fi
 
 notify_msg "Script has run fully"
