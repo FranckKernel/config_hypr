@@ -9,20 +9,7 @@ local mach = require("luaScripts.get_machine")
 Machine = mach.Machine
 local machine = mach.machine
 
-if machine == Machine.Desktop then
-	Monitor = {
-		LEFT = "DP-2",
-		MAIN = "DP-1",
-		RIGHT = "HDMI-A-1",
-		LAPTOP = "eDP-1", -- not used on desktop.
-	}
-elseif machine == Machine.Laptop then
-	Monitor = {
-		LEFT = "DP-1",
-		MAIN = "eDP-1",
-		RIGHT = "HDMI-A-1",
-	}
-end
+gu.send_notification(machine)
 
 -- Locations is updated by reading a file (current_location.csv)
 -- The file is updated at boot by user systemd.
@@ -36,7 +23,31 @@ Locations = location_getter.Locations
 
 Location = location_getter.Location
 
+gu.send_notification(Location)
+
 -- gu.send_notification(Location)
+
+if machine == Machine.Desktop then
+	if Location == Locations.DAD then
+		Monitor = {
+			LEFT = "HDMI-A-2",
+			MAIN = "DP-1",
+			RIGHT = "HDMI-A-1",
+		}
+	elseif Location == Locations.MOM then
+		Monitor = {
+			LEFT = "DP-2",
+			MAIN = "DP-1",
+			RIGHT = "HDMI-A-1",
+		}
+	end
+elseif machine == Machine.Laptop then
+	Monitor = {
+		LEFT = "DP-1",
+		MAIN = "eDP-1",
+		RIGHT = "HDMI-A-1",
+	}
+end
 
 hl.monitor({
 	output = "",
@@ -47,6 +58,8 @@ hl.monitor({
 
 if machine == Machine.Desktop then
 	if Location == Locations.DAD then
+		gu.send_notification("dad location")
+
 		hl.monitor({
 			output = Monitor.MAIN,
 			mode = "1920x1080@144",
@@ -62,7 +75,16 @@ if machine == Machine.Desktop then
 			scale = 1,
 			transform = 0,
 		})
+
+		hl.monitor({
+			output = Monitor.LEFT,
+			mode = "1920x1080@60",
+			position = "-1920x180",
+			scale = 1,
+			transform = 0,
+		})
 	elseif Location == Locations.MOM then
+		gu.send_notification("mom location")
 		hl.monitor({
 			output = Monitor.MAIN,
 			mode = "2560x1440@180",
