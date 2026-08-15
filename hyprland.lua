@@ -146,15 +146,20 @@ hl.on("hyprland.start", function()
 	-- I don't really need a systemd, I could call it directly.
 	-- I disabled the one that waits for this
 
-	-- local locationBootUpdate = "$HOME/.config/hypr/scripts/get_locations/location_boot_update.sh"
-	-- hl.exec_cmd("sleep 5 && " .. locationBootUpdate)
-end)
+	local locationBootUpdate = "$HOME/.config/hypr/scripts/get_locations/location_boot_update.sh"
+	-- hl.dsp.exec_cmd("sleep 5 && " .. locationBootUpdate)
+	hl.timer(function() hl.dsp.exec_cmd(locationBootUpdate) end, {
+		timeout = 5000,
+		type = "oneshot",
+	})
 
-local locationBootUpdateLua = require("luaScripts.location_boot_update")
-hl.timer(function() locationBootUpdateLua.main() end, {
-	timeout = 100,
-	type = "oneshot",
-})
+	-- -- Doing this to call a lua function is bad. It will cause hang. It's not running async
+	-- local locationBootUpdateLua = require("luaScripts.location_boot_update")
+	-- hl.timer(function() locationBootUpdateLua.main() end, {
+	-- 	timeout = 100,
+	-- 	type = "oneshot",
+	-- })
+end)
 
 -- Simple execs:
 -- hl.exec_cmd("$HOME/.config/hypr/scripts/refresh_layout.sh")
