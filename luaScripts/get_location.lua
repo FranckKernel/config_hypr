@@ -1,7 +1,7 @@
 local Locations = {
-	MOM = "mom",
-	DAD = "dad",
-	OTHER = "other",
+	MOM = "Mom",
+	DAD = "Dad",
+	UNKOWN = "unknown",
 }
 
 local location_file = os.getenv("HOME") .. "/.config/hypr/ignore/current_location.txt"
@@ -20,7 +20,7 @@ local function get_location()
 	raw = raw:lower()
 
 	for _, value in pairs(Locations) do
-		if value == raw then
+		if value:lower() == raw then
 			return value
 		end
 	end

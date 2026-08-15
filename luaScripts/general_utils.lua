@@ -89,4 +89,74 @@ function M.notify_table(tbl, config)
 	os.execute(cmd)
 end
 
+function M.read_file(path)
+	local file = io.open(path, "r")
+
+	if not file then
+		return nil
+	end
+
+	local content = file:read("*a")
+	file:close()
+
+	return content:gsub("%s+$", "")
+end
+
+function M.write_file(path, content)
+	local file = io.open(path, "w")
+
+	if not file then
+		return false
+	end
+
+	file:write(content)
+	file:close()
+
+	return true
+end
+
+function M.run(command)
+	local handle = io.popen(command .. " 2>&1")
+
+	if not handle then
+		return nil, 1
+	end
+
+	local output = handle:read("*a")
+	local success, _, code = handle:close()
+
+	if success then
+		return output, 0
+	end
+
+	return output, code or 1
+end
+
+local USER_ID = io.popen("id -u"):read("*a"):gsub("%s+$", "")
+local XDG_RUNTIME_DIR = os.getenv("XDG_RUNTIME_DIR") or ("/run/user/" .. USER_ID)
+local hypr_instance = os.getenv("HYPRLAND_INSTANCE_SIGNATURE")
+
+if not hypr_instance or hypr_instance == "" then
+	local handle = io.popen("ls -t '" .. XDG_RUNTIME_DIR .. "/hypr' 2>/dev/null | head -n1")
+
+	if handle then
+		hypr_instance = handle:read("*a"):gsub("%s+$", "")
+		handle:close()
+	end
+end
+
+if not hypr_instance or hypr_instance == "" then
+	print("Cannot find Hyprland instance signature!")
+
+	M.run_hyprctl = function() M.send_notification("run_hyprctl command not gonna work!") end
+
+	return M
+end
+
+function M.run_hyprctl(command)
+	local dbus_address = "unix:path=" .. XDG_RUNTIME_DIR .. "/bus"
+
+	return M.run("HYPRLAND_INSTANCE_SIGNATURE='" .. hypr_instance .. "' DBUS_SESSION_BUS_ADDRESS='" .. dbus_address .. "' hyprctl " .. command)
+end
+
 return M

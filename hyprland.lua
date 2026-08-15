@@ -74,6 +74,7 @@ local menu = "~/.config/rofi/launchers/type-6/launcher.sh"
 -- Autostart necessary processes (like notifications daemons, status bars, etc.)
 -- Or execute your favorite apps at launch like this:
 --
+
 hl.on("hyprland.start", function()
 	hl.exec_cmd("hyprpaper")
 	hl.exec_cmd("hypridle")
@@ -139,7 +140,21 @@ hl.on("hyprland.start", function()
 	hl.dispatch(hl.dsp.focus({ workspace = 13 }))
 	hl.dispatch(hl.dsp.focus({ workspace = 21 })) -- since this is the third screen, i can key this hard coded
 	hl.dispatch(hl.dsp.focus({ workspace = 1 }))
+
+	-- End of on start
+	hl.exec_cmd("systemctl --user start graphical-session.target")
+	-- I don't really need a systemd, I could call it directly.
+	-- I disabled the one that waits for this
+
+	-- local locationBootUpdate = "$HOME/.config/hypr/scripts/get_locations/location_boot_update.sh"
+	-- hl.exec_cmd("sleep 5 && " .. locationBootUpdate)
 end)
+
+local locationBootUpdateLua = require("luaScripts.location_boot_update")
+hl.timer(function() locationBootUpdateLua.main() end, {
+	timeout = 100,
+	type = "oneshot",
+})
 
 -- Simple execs:
 -- hl.exec_cmd("$HOME/.config/hypr/scripts/refresh_layout.sh")
@@ -616,7 +631,3 @@ hl.window_rule({
 })
 
 -- End of config
-hl.on("hyprland.start", function()
-	--
-	hl.exec_cmd("systemctl --user start graphical-session.target")
-end)

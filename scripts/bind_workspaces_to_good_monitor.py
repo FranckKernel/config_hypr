@@ -51,20 +51,21 @@ def main():
 
     # time.sleep(4)
 
+    focus_workspace(22)
+    focus_workspace(14)
     focus_workspace(1)
-
-    # Make sure the current focused in workspace on the left and right screen are correctly assigned
-    focus_workspace(14)  # Pick unused right screen workspace.
-    focus_workspace(13)  # Focus back on the boot right screen workspace
-
-    focus_workspace(24)  # Pick unused left screen workspace
-    focus_workspace(21)  # Focus back on boot left screen workspace
 
     # time.sleep(4)
 
     # Restore windows to their original workspaces
     for address, workspace in saved_workspaces.items():
         move_window(address, workspace)
+
+    # Make sure the current focused in workspace on the left and right screen are correctly assigned
+    focus_workspace(1)
+    focus_workspace(21)  # Focus back on boot left screen workspace
+    focus_workspace(13)  # Focus back on the boot right screen workspace
+    focus_workspace(1)
 
 
 if __name__ == "__main__":

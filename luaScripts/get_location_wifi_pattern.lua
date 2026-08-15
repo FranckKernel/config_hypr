@@ -1,4 +1,16 @@
-local csv_file = os.getenv("HOME") .. "/.config/hypr/ignore/locations_wifi_patterns.csv"
+local M = {}
+
+local gu = require("luaScripts.general_utils")
+
+local HOME = os.getenv("HOME")
+
+local CSV_FILE = HOME .. "/.config/hypr/ignore/locations_wifi_patterns.csv"
+
+local CURRENT_LOCATION_FILE = HOME .. "/.config/hypr/ignore/current_location.txt"
+
+--------------------------------------------------
+-- WiFi
+--------------------------------------------------
 
 local function get_wifi_networks()
 	local networks = {}
@@ -20,16 +32,20 @@ local function get_wifi_networks()
 	return networks
 end
 
+--------------------------------------------------
+-- Location patterns
+--------------------------------------------------
+
 local function load_locations()
 	local locations = {}
 
-	local file = io.open(csv_file, "r")
+	local file = io.open(CSV_FILE, "r")
 
 	if not file then
 		return locations
 	end
 
-	-- Skip CSV header
+	-- Skip CSV header.
 	file:read("*line")
 
 	for line in file:lines() do
@@ -48,7 +64,11 @@ local function load_locations()
 	return locations
 end
 
-local function find_location()
+--------------------------------------------------
+-- Location detection
+--------------------------------------------------
+
+function M.find_location()
 	local wifi_networks = get_wifi_networks()
 	local locations = load_locations()
 
@@ -63,15 +83,20 @@ local function find_location()
 	return "Unknown"
 end
 
-local locationString = find_location()
-local current_location_file = os.getenv("HOME") .. "/.config/hypr/ignore/current_location.txt"
-os.execute('mkdir -p "' .. os.getenv("HOME") .. '/.config/hypr/ignore"')
+--------------------------------------------------
+-- Main
+--------------------------------------------------
 
-local file = io.open(current_location_file, "w")
+function M.main()
+	local location = M.find_location()
 
-if file then
-	file:write(locationString)
-	file:close()
+	if not gu.write_file(CURRENT_LOCATION_FILE, location) then
+		return nil, "Could not write location file"
+	end
+
+	print(location)
+
+	return location
 end
 
-print(locationString)
+return M

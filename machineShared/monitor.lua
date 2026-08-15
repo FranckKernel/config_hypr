@@ -52,6 +52,12 @@ if machine == Machine.Desktop then
 			MAIN = "DP-1",
 			RIGHT = "HDMI-A-1",
 		}
+	else
+		Monitor = {
+			LEFT = "DP-2",
+			MAIN = "DP-1",
+			RIGHT = "HDMI-A-1",
+		}
 	end
 elseif machine == Machine.Laptop then
 	Monitor = {
