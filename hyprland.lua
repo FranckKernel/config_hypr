@@ -107,6 +107,9 @@ hl.on("hyprland.start", function()
 		DebuggerWorkspace = "11",
 	}
 
+	local browser_workspace = "13"
+	local youtube_music_workspace = "20"
+
 	if machine == Machine.Desktop then
 		local active_monitors = require("luaScripts.check_plugged_monitors").monitor_count
 
@@ -118,6 +121,8 @@ hl.on("hyprland.start", function()
 		end
 	elseif machine == Machine.Laptop then
 		workspaceOfTerminal.RunnerWorkspace = "12"
+		browser_workspace = "3"
+		youtube_music_workspace = "10"
 	end
 
 	hl.exec_cmd('kitty tmux new-session -c "' .. mainProjectLocation .. '" -s Editor', {
@@ -131,20 +136,23 @@ hl.on("hyprland.start", function()
 	})
 
 	hl.exec_cmd(browser, {
-		workspace = "13",
+		workspace = browser_workspace,
 	})
 	hl.exec_cmd("youtube-music", {
-		workspace = "20",
+		workspace = youtube_music_workspace,
 	})
 
-	hl.dispatch(hl.dsp.focus({ workspace = 13 }))
-	hl.dispatch(hl.dsp.focus({ workspace = 21 })) -- since this is the third screen, i can key this hard coded
-	hl.dispatch(hl.dsp.focus({ workspace = 1 }))
+	if machine == Machine.Desktop then
+		hl.dispatch(hl.dsp.focus({ workspace = 13 }))
+		hl.dispatch(hl.dsp.focus({ workspace = 21 })) -- since this is the third screen, i can key this hard coded
+		hl.dispatch(hl.dsp.focus({ workspace = 1 }))
+	end
 
 	-- End of on start
 	hl.exec_cmd("systemctl --user start graphical-session.target")
 	-- I don't really need a systemd, I could call it directly.
 	-- I disabled the one that waits for this
+	-- But maybe a day will come when i will need it
 
 	local locationBootUpdate = "$HOME/.config/hypr/scripts/get_locations/location_boot_update.sh"
 	-- hl.dsp.exec_cmd("sleep 5 && " .. locationBootUpdate)

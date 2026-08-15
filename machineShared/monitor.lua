@@ -60,6 +60,7 @@ if machine == Machine.Desktop then
 		}
 	end
 elseif machine == Machine.Laptop then
+	-- gu.send_notification("laptop. eDP-1")
 	Monitor = {
 		LEFT = "DP-1",
 		MAIN = "eDP-1",
