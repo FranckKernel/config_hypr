@@ -500,6 +500,11 @@ hl.bind(altMod .. " + M", hl.dsp.exec_cmd("~/.config/rofi/applets/bin/mpd.sh"))
 hl.bind(mainMod .. " + Y", hl.dsp.exec_cmd("hyprpicker -a"))
 hl.bind(mainModShift .. " + Y", hl.dsp.exec_cmd("youtube-music"))
 
+-- Locked only binding
+hl.bind("ALT + SHIFT + S", hl.dsp.exec_cmd("pgrep -x hyprlock >/dev/null && systemctl poweroff"), { locked = true })
+hl.bind("ALT + SHIFT + R", hl.dsp.exec_cmd("pgrep -x hyprlock >/dev/null && systemctl reboot"), { locked = true })
+-- Log out is unsafe
+
 -- Night light
 hl.bind(mainMod .. " + N", hl.dsp.exec_cmd("~/QolScripts/toggle_nightlight.sh"))
 
