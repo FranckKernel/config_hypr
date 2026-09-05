@@ -99,7 +99,10 @@ hl.on("hyprland.start", function()
 	local espProjectLocation = "$HOME/Documents/zzz__PersonalProjects/ESP32/myProject/src"
 	local stmProjectLocation = "$HOME/Documents/zzz__PersonalProjects/STM32/STMKernel/src"
 
-	local mainProjectLocation = stmProjectLocation
+	local lab1ProjectLocation = "$HOME/Documents/Vivado/inf3500-a26-g2-labo1-franckkernel"
+
+	local mainProjectLocation = lab1ProjectLocation
+	-- local mainProjectLocation = stmProjectLocation
 
 	local workspaceOfTerminal = {
 		editorWorkspace = "1",
