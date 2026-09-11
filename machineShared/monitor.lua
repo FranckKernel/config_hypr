@@ -109,7 +109,7 @@ if machine == Machine.Desktop then
 			transform = 0,
 		})
 	elseif Location == Locations.MOM then
-		gu.send_notification("mom location")
+		-- gu.send_notification("mom location")
 		hl.monitor({
 			output = Monitor.MAIN,
 			mode = "2560x1440@180",

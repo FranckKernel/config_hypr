@@ -101,7 +101,10 @@ hl.on("hyprland.start", function()
 
 	local lab1ProjectLocation = "$HOME/Documents/Vivado/inf3500-a26-g2-labo1-franckkernel"
 
-	local mainProjectLocation = lab1ProjectLocation
+	local exerciseLocation = "$HOME/Documents/University (Poly)/Semester 1/INF3500/Self Exercises"
+
+	-- local mainProjectLocation = lab1ProjectLocation
+	local mainProjectLocation = exerciseLocation
 	-- local mainProjectLocation = stmProjectLocation
 
 	local workspaceOfTerminal = {
@@ -159,7 +162,10 @@ hl.on("hyprland.start", function()
 
 	local locationBootUpdate = "$HOME/.config/hypr/scripts/get_locations/location_boot_update.sh"
 	-- hl.dsp.exec_cmd("sleep 5 && " .. locationBootUpdate)
-	hl.timer(function() hl.dsp.exec_cmd(locationBootUpdate) end, {
+	hl.timer(function()
+		--
+		hl.exec_cmd("nohup " .. locationBootUpdate .. " >/dev/null 2>&1 &")
+	end, {
 		timeout = 5000,
 		type = "oneshot",
 	})
