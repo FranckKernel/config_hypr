@@ -92,6 +92,8 @@ hl.on("hyprland.start", function()
 	if machine == Machine.Desktop then
 		hl.exec_cmd("$HOME/.config/waybar/waybar_toggle_bottom_desktop.sh")
 	elseif machine == Machine.Laptop then
+		local gu = require("luaScripts.general_utils")
+
 		hl.exec_cmd("$HOME/.config/waybar/waybar_toggle_bottom_laptop.sh")
 	end
 
@@ -524,7 +526,11 @@ hl.bind(mainMod .. " + CTRL + F", hl.dsp.exec_cmd("$HOME/.config/conky/show_all/
 
 -- Bar toggles
 hl.bind(mainMod .. " + CTRL + T", hl.dsp.exec_cmd("$HOME/.config/ironbar/ironbar_toggle_top_bar.sh"))
-hl.bind(mainMod .. " + CTRL + B", hl.dsp.exec_cmd("~/.config/waybar/waybar_toggle_bottom_desktop.sh"))
+if machine == Machine.Desktop then
+	hl.bind(mainMod .. " + CTRL + B", hl.dsp.exec_cmd("~/.config/waybar/waybar_toggle_bottom_desktop.sh"))
+elseif machine == Machine.Laptop then
+	hl.bind(mainMod .. " + CTRL + B", hl.dsp.exec_cmd("~/.config/waybar/waybar_toggle_bottom_laptop.sh"))
+end
 
 safe_require("./machineShared/media.lua")
 

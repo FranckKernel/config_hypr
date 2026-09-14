@@ -68,7 +68,7 @@ end
 -- Laptop
 -- =========================================================
 
-if machine == Machine.LAPTOP then
+if machine == Machine.Laptop then
 	-- Hardware volume keys
 	hl.bind("XF86AudioRaiseVolume", hl.dsp.exec_cmd("swayosd-client --output-volume +5"))
 	hl.bind("XF86AudioLowerVolume", hl.dsp.exec_cmd("swayosd-client --output-volume -5"))
@@ -89,6 +89,14 @@ if machine == Machine.LAPTOP then
 	hl.bind("XF86MonBrightnessDown", hl.dsp.exec_cmd("brightnessctl set 5%-"))
 
 	-- Keyboard backlight
+	gu.send_notification("laptop")
 	hl.bind(altMod .. " + SPACE", hl.dsp.exec_cmd("brightnessctl --device='*::kbd_backlight' set +50%"))
 	hl.bind(altMod .. " + SHIFT + SPACE", hl.dsp.exec_cmd("brightnessctl --device='*::kbd_backlight' set 50%-"))
+
+	-- 	bind = , XF86MonBrightnessUp, exec, brightnessctl set +5%
+	-- bind = , XF86MonBrightnessDown, exec, brightnessctl set 5%-
+	--
+	-- # Keyboard backlight control
+	-- bind = $altMod, Space, exec, brightnessctl -d platform::kbd_backlight set +50%
+	-- bind = $altMod+Shift, Space, exec, brightnessctl -d platform::kbd_backlight set 50%-
 end
