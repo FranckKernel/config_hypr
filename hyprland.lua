@@ -101,12 +101,22 @@ hl.on("hyprland.start", function()
 	local espProjectLocation = "$HOME/Documents/zzz__PersonalProjects/ESP32/myProject/src"
 	local stmProjectLocation = "$HOME/Documents/zzz__PersonalProjects/STM32/STMKernel/src"
 
-	local lab1ProjectLocation = "$HOME/Documents/Vivado/inf3500-a26-g2-labo1-franckkernel"
-
 	local exerciseLocation = "$HOME/Documents/University (Poly)/Semester 1/INF3500/Self Exercises"
 
+	local lab1ProjectLocation = "$HOME/Documents/Vivado/inf3500-a26-g2-labo1-franckkernel"
+	local lab2LocationLaptop = "$HOME/Documents/University-Poly/Sem1/INF3500/Labs/inf3500-a26-g2-labo2-franckkernel"
+	local lab2LocationDesktop = "$HOME/Documents/Vivado/inf3500-a26-g2-labo2-franckkernel"
+
+	local lab2Location
+
+	if machine == Machine.Desktop then
+		lab2Location = lab2LocationDesktop
+	elseif machine == Machine.Laptop then
+		lab2Location = lab2LocationLaptop
+	end
+
 	-- local mainProjectLocation = lab1ProjectLocation
-	local mainProjectLocation = exerciseLocation
+	local mainProjectLocation = lab2Location
 	-- local mainProjectLocation = stmProjectLocation
 
 	local workspaceOfTerminal = {
