@@ -2,6 +2,8 @@ local M = {}
 
 M.PRINT_CUSTOM_DEBUG = true
 
+local LOG_DIR = os.getenv("HOME") .. "/.config/hypr/logs"
+
 function M.send_notification(msg)
 	local cmd = string.format("notify-send -t 5000 '[Debug]' '%s'", msg)
 	os.execute(cmd)
@@ -20,6 +22,19 @@ function M.print_custom(...)
 
 	local msg = table.concat(parts, "\t")
 	print(msg)
+
+	-- Write to ~/.config/hypr/logs/YYYY-MM-DD.txt
+	os.execute("mkdir -p '" .. LOG_DIR .. "'")
+
+	local date = os.date("%Y-%m-%d")
+	local time = os.date("%H:%M:%S")
+	local log_path = LOG_DIR .. "/" .. date .. ".txt"
+
+	local file = io.open(log_path, "a")
+	if file then
+		file:write("[" .. time .. "] " .. msg .. "\n")
+		file:close()
+	end
 end
 
 function M.table_to_string(tbl, config, indent, seen)

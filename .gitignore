@@ -8,6 +8,8 @@ machine_unique/alt_sound.conf
 machine_unique/brightness_sound.conf
 machine_unique/waybar_toggle.conf
 
+logs/
+
 machine
 machine/**
 # Use desktop or laptop for the different file, and just create a softlink for it

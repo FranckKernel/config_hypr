@@ -10,18 +10,7 @@
 -- Create your files separately and then require them like this:
 -- require("myColors")
 
-local env = {
-	HOME = os.getenv("HOME"),
-	--
-}
-
-local function p(path)
-	return path:gsub("%$(%w+)", function(var)
-		return env[var] or "$" .. var
-		--
-	end)
-	--
-end
+local gu = require("luaScripts.general_utils")
 
 local function safe_require(module)
 	local status, value = pcall(require, module)
@@ -64,6 +53,49 @@ local terminal = "kitty tmux"
 local browser = "~/.local/bin/zen"
 local fileManager = "dolphin"
 local menu = "~/.config/rofi/launchers/type-6/launcher.sh"
+
+-------------------------------
+---- ENVIRONMENT VARIABLES ----
+-------------------------------
+
+-- See https://wiki.hypr.land/Configuring/Advanced-and-Cool/Environment-variables/
+
+local function add_path(path, ...)
+	for _, dir in ipairs({ ... }) do
+		if not path:find("(^|:)" .. dir:gsub("[%.%-%+%[%]%(%)%$%^]", "%%%0") .. "(:|$)") then
+			path = path .. ":" .. dir
+		end
+	end
+
+	return path
+end
+
+local env = {
+	-- This is for the p() function for string replace.
+	HOME = os.getenv("HOME"),
+	PATH = add_path(
+		os.getenv("PATH"),
+		os.getenv("HOME") .. "/.cargo/bin",
+		os.getenv("HOME") .. "/.local/bin",
+		os.getenv("HOME") .. "/bin"
+		--
+	),
+}
+
+local function p(path)
+	return path:gsub("%$(%w+)", function(var)
+		return env[var] or "$" .. var
+		--
+	end)
+	--
+end
+
+-- This does the actual env work
+hl.env("XCURSOR_SIZE", "24")
+hl.env("HYPRCURSOR_SIZE", "24")
+hl.env("PATH", env.PATH)
+
+gu.print_custom(os.getenv("PATH"))
 
 -------------------
 ---- AUTOSTART ----
@@ -259,15 +291,6 @@ local function change_layout_bindings()
 		hl.bind("SUPER + COMMA", hl.dsp.layout("orientationprev"))
 	end
 end
-
--------------------------------
----- ENVIRONMENT VARIABLES ----
--------------------------------
-
--- See https://wiki.hypr.land/Configuring/Advanced-and-Cool/Environment-variables/
-
-hl.env("XCURSOR_SIZE", "24")
-hl.env("HYPRCURSOR_SIZE", "24")
 
 -----------------------
 ----- PERMISSIONS -----
