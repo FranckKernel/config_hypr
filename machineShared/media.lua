@@ -47,7 +47,7 @@ hl.bind(altMod .. " + CTRL + DOWN", hl.dsp.exec_cmd(youtube_controller .. " musi
 -- Desktop
 -- =========================================================
 
-if machine == Machine.DESKTOP then
+if machine == Machine.Desktop then
 	-- Block hardware volume keys
 	hl.bind("XF86AudioLowerVolume", hl.dsp.exec_cmd("echo Blocked > /dev/null"))
 	hl.bind("XF86AudioRaiseVolume", hl.dsp.exec_cmd("echo Blocked > /dev/null"))

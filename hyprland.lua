@@ -138,6 +138,7 @@ hl.on("hyprland.start", function()
 	local lab1ProjectLocation = "$HOME/Documents/Vivado/inf3500-a26-g2-labo1-franckkernel"
 	local lab2LocationLaptop = "$HOME/Documents/University-Poly/Sem1/INF3500/Labs/inf3500-a26-g2-labo2-franckkernel"
 	local lab2LocationDesktop = "$HOME/Documents/Vivado/inf3500-a26-g2-labo2-franckkernel"
+	local lab3LocationDesktop = "$HOME/Documents/Vivado/inf3500-a26-g2-labo3-franckkernel"
 
 	local lab2Location
 
@@ -148,7 +149,7 @@ hl.on("hyprland.start", function()
 	end
 
 	-- local mainProjectLocation = lab1ProjectLocation
-	local mainProjectLocation = lab2Location
+	local mainProjectLocation = stmProjectLocation
 	-- local mainProjectLocation = stmProjectLocation
 
 	local workspaceOfTerminal = {

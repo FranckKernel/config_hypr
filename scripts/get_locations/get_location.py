@@ -11,6 +11,7 @@ from enum import IntEnum
 import dbus
 from dbus.mainloop.glib import DBusGMainLoop
 from gi.repository import GLib
+import requests
 
 LOCATIONS = Path.home() / ".config/hypr/ignore/locations.csv"
 CACHE = Path.home() / ".cache/hypr-location.json"
@@ -129,14 +130,80 @@ def find_name(lat, lon):
     return "Unknown"
 
 
+class Geocoder:
+    def __init__(self):
+        self.base_url = "https://nominatim.openstreetmap.org"
+        self.headers = {"User-Agent": "hypr-location-script"}
+
+    def address_to_coordinates(self, address):
+        """
+        Convert an address into latitude/longitude.
+
+        Returns:
+            tuple: (latitude, longitude)
+
+        Raises:
+            ValueError if no result is found.
+        """
+
+        url = f"{self.base_url}/search"
+
+        params = {"q": address, "format": "json", "limit": 1}
+
+        response = requests.get(url, params=params, headers=self.headers, timeout=10)
+
+        response.raise_for_status()
+
+        data = response.json()
+
+        if not data:
+            raise ValueError(f"Could not find address: {address}")
+
+        return (float(data[0]["lat"]), float(data[0]["lon"]))
+
+    def coordinates_to_address(self, latitude, longitude):
+        """
+        Convert coordinates into an address.
+
+        Returns:
+            str: formatted address
+
+        Raises:
+            ValueError if no address is found.
+        """
+
+        url = f"{self.base_url}/reverse"
+
+        params = {"lat": latitude, "lon": longitude, "format": "json"}
+
+        response = requests.get(url, params=params, headers=self.headers, timeout=10)
+
+        response.raise_for_status()
+
+        data = response.json()
+
+        if "display_name" not in data:
+            raise ValueError(f"Could not find address for {latitude}, {longitude}")
+
+        return data["display_name"]
+
+
 loop = GLib.MainLoop()
 lat, lon, accuracy, desc = get_location()
-print(lat, lon, accuracy)
+print("")
+print(f"lat = {lat}, lon = {lon}, accuracy = {accuracy}m, desc = {desc}")
 if accuracy > 1000:
     print("Location unreliable:", accuracy, "m")
     exit(1)
 
+
+geo = Geocoder()
+address = geo.coordinates_to_address(lat, lon)
+
 location_enum_name = find_name(lat, lon)
 CURRENT_LOCATION_FILE.parent.mkdir(parents=True, exist_ok=True)
 CURRENT_LOCATION_FILE.write_text(location_enum_name)
-print(location_enum_name)
+
+print("")
+print(f"address = {address}")
+print(f"location_enum_name = {location_enum_name}")
